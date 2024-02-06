@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik+Mono+One&effect=fire-animation">
+<style>
+    center{
+        text-align: center;
+    }
+    h1 {
+      font-size: 35px;
+      color: black;
+      font-family: Rubik Mono One;
+    }
+    div.first { 
+        position: relative; 
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &::before {  
+            content: "";
+            background-image: url('strong_smokey.jpeg');
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            opacity: 0.15;
+        }
+      }
+    
+    button{
+        font-size: 10.5px;
+        font-family: "Helvetica";
+        border-radius: 7px;
+        border: 2px solid #f74716;
+        transition-duration: 0.4s;
+    }
+    button:hover {
+        background-color: #f74716;
+        color: white;
+    }
+</style>
+<head>
+<h1>US Wildfires By Code (Size) from 1992-2020</h1>
+
+</head>
+<title>Fire Codes</title>
+
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v6.js"></script>
+<!-- Add 28 buttons (one per year)-->
+<button onclick="update(data1)">1992</button>
+<button onclick="update(data2)">1993</button>
+<button onclick="update(data3)">1994</button>
+<button onclick="update(data4)">1995</button>
+<button onclick="update(data5)">1996</button>
+<button onclick="update(data6)">1997</button>
+<button onclick="update(data7)">1998</button>
+<button onclick="update(data8)">1999</button>
+<button onclick="update(data9)">2000</button>
+<button onclick="update(data10)">2001</button>
+<button onclick="update(data11)">2002</button>
+<button onclick="update(data12)">2003</button>
+<button onclick="update(data13)">2004</button>
+<button onclick="update(data14)">2005</button>
+<button onclick="update(data15)">2006</button>
+<button onclick="update(data16)">2007</button>
+<button onclick="update(data17)">2008</button>
+<button onclick="update(data18)">2009</button>
+<button onclick="update(data19)">2010</button>
+<button onclick="update(data20)">2011</button>
+<button onclick="update(data21)">2012</button>
+<button onclick="update(data22)">2013</button>
+<button onclick="update(data23)">2014</button>
+<button onclick="update(data24)">2015</button>
+<button onclick="update(data25)">2016</button>
+<button onclick="update(data26)">2017</button>
+<button onclick="update(data27)">2018</button>
+<button onclick="update(data28)">2019</button>
+<button onclick="update(data29)">2020</button>
+
+<!-- Create a div and source where the graph will be viewed -->
+<div class= "first" id="my_dataviz"></div>
+
+<script>
+
+// Create 29 data_set
+    const data1 = [{code: "A", code_count: 25531},{code: "B", code_count: 32977},{code: "C",code_count: 7954},{code: "D",code_count: 876},{code: "E", code_count: 368},{code: "F", code_count: 197},{code: "G",code_count: 58}];
+    const data2 = [{"code": "A","code_count": 20761},{"code": "B","code_count": 32191},{"code": "C","code_count": 7571},{"code": "D","code_count": 831},{"code": "E","code_count": 397},{"code": "F","code_count": 159},{"code": "G","code_count": 65}];
+    const data3 = [{"code": "A","code_count": 27890},{"code": "B","code_count": 36815},{"code": "C","code_count": 8829},{"code": "D","code_count": 1182},{"code": "E","code_count": 667},{"code": "F","code_count": 403},{"code": "G","code_count": 146}];
+    const data4 = [{"code":"A","code_count":23896},{"code":"B","code_count":36850},{"code":"C","code_count":8922},{"code":"D","code_count":1005},{"code":"E","code_count":473},{"code":"F","code_count":225},{"code":"G","code_count":69}]
+    const data5 = [{"code":"A","code_count":25114},{"code":"B","code_count":37840},{"code":"C","code_count":10118},{"code":"D","code_count":1220},{"code":"E","code_count":694},{"code":"F","code_count":374},{"code":"G","code_count":201}]
+    const data6 = [{"code":"A","code_count":21739},{"code":"B","code_count":31599},{"code":"C","code_count":6937},{"code":"D","code_count":712},{"code":"E","code_count":279},{"code":"F","code_count":115},{"code":"G","code_count":61}]
+    const data7 = [{"code":"A","code_count":23462},{"code":"B","code_count":35242},{"code":"C","code_count":8072},{"code":"D","code_count":906},{"code":"E","code_count":409},{"code":"F","code_count":189},{"code":"G","code_count":76}]
+    const data8 = [{"code":"A","code_count":27720},{"code":"B","code_count":47200},{"code":"C","code_count":11855},{"code":"D","code_count":1373},{"code":"E","code_count":672},{"code":"F","code_count":374},{"code":"G","code_count":156}]
+    const data9 = [{"code":"A","code_count":33253},{"code":"B","code_count":47495},{"code":"C","code_count":12429},{"code":"D","code_count":1625},{"code":"E","code_count":840},{"code":"F","code_count":502},{"code":"G","code_count":252}]
+    const data10 = [{"code":"A","code_count":31485},{"code":"B","code_count":44030},{"code":"C","code_count":9187},{"code":"D","code_count":1215},{"code":"E","code_count":612},{"code":"F","code_count":355},{"code":"G","code_count":117}]
+    const data11 = [{"code":"A","code_count":27875},{"code":"B","code_count":37951},{"code":"C","code_count":8480},{"code":"D","code_count":979},{"code":"E","code_count":420},{"code":"F","code_count":253},{"code":"G","code_count":170}]
+    const data12 = [{"code":"A","code_count":28292},{"code":"B","code_count":31800},{"code":"C","code_count":6399},{"code":"D","code_count":862},{"code":"E","code_count":485},{"code":"F","code_count":309},{"code":"G","code_count":128}]
+    const data13 = [{"code":"A","code_count":27423},{"code":"B","code_count":32825},{"code":"C","code_count":7736},{"code":"D","code_count":758},{"code":"E","code_count":341},{"code":"F","code_count":169},{"code":"G","code_count":118}]
+    const data14 = [{"code":"A","code_count":30899},{"code":"B","code_count":47746},{"code":"C","code_count":11494},{"code":"D","code_count":1460},{"code":"E","code_count":703},{"code":"F","code_count":395},{"code":"G","code_count":224}]
+    const data15 = [{"code":"A","code_count":36681},{"code":"B","code_count":60658},{"code":"C","code_count":16264},{"code":"D","code_count":2290},{"code":"E","code_count":1150},{"code":"F","code_count":629},{"code":"G","code_count":271}]
+    const data16 = [{"code":"A","code_count":36126},{"code":"B","code_count":49168},{"code":"C","code_count":10764},{"code":"D","code_count":1456},{"code":"E","code_count":699},{"code":"F","code_count":390},{"code":"G","code_count":234}]
+    const data17 = [{"code":"A","code_count":30035},{"code":"B","code_count":44754},{"code":"C","code_count":10348},{"code":"D","code_count":1693},{"code":"E","code_count":847},{"code":"F","code_count":469},{"code":"G","code_count":160}]
+    const data18 = [{"code":"A","code_count":29555},{"code":"B","code_count":40272},{"code":"C","code_count":9205},{"code":"D","code_count":1322},{"code":"E","code_count":664},{"code":"F","code_count":336},{"code":"G","code_count":138}]
+    const data19 = [{"code":"A","code_count":32623},{"code":"B","code_count":41280},{"code":"C","code_count":9511},{"code":"D","code_count":1229},{"code":"E","code_count":579},{"code":"F","code_count":252},{"code":"G","code_count":105}]
+    const data20 = [{"code":"A","code_count":34884},{"code":"B","code_count":48471},{"code":"C","code_count":11771},{"code":"D","code_count":1887},{"code":"E","code_count":995},{"code":"F","code_count":619},{"code":"G","code_count":276}]
+    const data21 = [{"code":"A","code_count":28803},{"code":"B","code_count":35009},{"code":"C","code_count":7961},{"code":"D","code_count":1182},{"code":"E","code_count":641},{"code":"F","code_count":418},{"code":"G","code_count":244}]
+    const data22 = [{"code":"A","code_count":29517},{"code":"B","code_count":29746},{"code":"C","code_count":5872},{"code":"D","code_count":678},{"code":"E","code_count":301},{"code":"F","code_count":188},{"code":"G","code_count":132}]
+    const data23 = [{"code":"A","code_count":29772},{"code":"B","code_count":31907},{"code":"C","code_count":7242},{"code":"D","code_count":868},{"code":"E","code_count":374},{"code":"F","code_count":214},{"code":"G","code_count":103}]
+    const data24 = [{"code":"A","code_count":34772},{"code":"B","code_count":32429},{"code":"C","code_count":7761},{"code":"D","code_count":1114},{"code":"E","code_count":570},{"code":"F","code_count":337},{"code":"G","code_count":292}]
+    const data25 = [{"code":"A","code_count":36105},{"code":"B","code_count":35246},{"code":"C","code_count":8156},{"code":"D","code_count":1210},{"code":"E","code_count":706},{"code":"F","code_count":399},{"code":"G","code_count":171}]
+    const data26 = [{"code":"A","code_count":36167},{"code":"B","code_count":34875},{"code":"C","code_count":8544},{"code":"D","code_count":1243},{"code":"E","code_count":720},{"code":"F","code_count":447},{"code":"G","code_count":283}]
+    const data27 = [{"code":"A","code_count":40314},{"code":"B","code_count":31394},{"code":"C","code_count":6865},{"code":"D","code_count":1085},{"code":"E","code_count":620},{"code":"F","code_count":378},{"code":"G","code_count":204}]
+    const data28 = [{"code":"A","code_count":30830},{"code":"B","code_count":26161},{"code":"C","code_count":4999},{"code":"D","code_count":759},{"code":"E","code_count":409},{"code":"F","code_count":263},{"code":"G","code_count":136}]
+    const data29 = [{"code":"A","code_count":34885},{"code":"B","code_count":30456},{"code":"C","code_count":5850},{"code":"D","code_count":988},{"code":"E","code_count":556},{"code":"F","code_count":334},{"code":"G","code_count":193}]
+    
+    // set the dimensions and margins of the graph
+    const margin = {top: 30, right: 30, bottom: 70, left: 60},
+        width = 1250 - margin.left - margin.right,
+        height = 550 - margin.top - margin.bottom;
+    
+    const colorArray = d3.scaleOrdinal().domain(["A","B","C", "D", "E", "F", "G"]).range(["#f74716", "#c54921", "#944b2b", "#624e35", "#315040", "black", "grey"]);
+
+    // append the svg object to the div tag
+    const svg = d3.select("#my_dataviz")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    
+    // Initialize the X axis
+    const x = d3.scaleBand()
+      .range([ 0, width ])
+      .padding(0.2);
+    const xAxis = svg.append("g")
+      .attr("transform", `translate(0,${height})`)
+    
+    // Initialize the Y axis
+    const y = d3.scaleLinear()
+      .range([ height, 0]);
+    const yAxis = svg.append("g")
+      .attr("class", "myYaxis")  
+
+
+    // Create function that updates the chart for each variable by axis:
+    function update(data) {
+    
+      // Update the X axis
+      x.domain(data.map(d => d.code))
+      xAxis.call(d3.axisBottom(x))
+    
+      // Update the Y axis
+      y.domain([0, d3.max(data, d => d.code_count) ]);
+      yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+    
+      // Create the u variable
+      var u = svg.selectAll("rect")
+        .data(data)
+
+      u
+        .join("rect") // Add a new rect for each new elements
+        .transition()
+        .duration(1000)
+          .attr("x", d => x(d.code))
+          .attr("y", d => y(d.code_count))
+          .attr("width", x.bandwidth())
+          .attr("height", d => height - y(d.code_count))
+          .attr("fill", d => colorArray(d.code))
+
+        u
+          .exit()
+          .remove()
+        };
+
+
+    // Initialize the plot with the first dataset
+    update(data1)
+    
+    </script>
